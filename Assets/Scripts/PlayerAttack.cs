@@ -11,7 +11,7 @@ public class PlayerAttack : MonoBehaviour {
     int maxImpacts = 5;
 
     bool attacking = false;
-    
+    float damage = 25f;
 
 
 	// Use this for initialization
@@ -43,10 +43,9 @@ public class PlayerAttack : MonoBehaviour {
             RaycastHit hit;
             if(Physics.Raycast(transform.position, transform.forward, out hit, 3f))
             {
-                if (hit.transform.tag == "Enemy")
+                if (hit.transform.tag == "Player")
                 {
-                   
-                    Destroy(hit.transform.gameObject);
+                    hit.transform.GetComponent<PhotonView>().RPC("GetShot", PhotonTargets.All, damage);                  
                 }
                 impacts[currentImpact].transform.position = hit.point;
                 impacts[currentImpact].GetComponent<ParticleSystem>().Play();
